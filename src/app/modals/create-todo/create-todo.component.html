@@ -1,0 +1,14 @@
+<form [formGroup]="todoForm" (ngSubmit)="onFormSubmit()">
+  <ion-item>
+    <ion-label position="floating">Name</ion-label>
+    <ion-input type="text" formControlName="todoName"></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-label position="floating">Description</ion-label>
+    <ion-input type="text" formControlName="todoDesc"></ion-input>
+  </ion-item>
+
+  <ion-button [disabled]="!todoForm.valid" type="submit" expand="block">Submit</ion-button>
+</form>
+

@@ -1,0 +1,8 @@
+<form [formGroup]="listForm" (ngSubmit)="onFormSubmit()">
+  <ion-item>
+    <ion-label position="floating">Name</ion-label>
+    <ion-input type="text" formControlName="listName"></ion-input>
+  </ion-item>
+
+  <ion-button [disabled]="!listForm.valid" type="submit" expand="block">Submit</ion-button>
+</form>
