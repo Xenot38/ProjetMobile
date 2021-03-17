@@ -1,0 +1,27 @@
+<form [formGroup]="registerForm" (ngSubmit)="onFormSubmit()">
+  <ion-header>
+    <ion-toolbar class="background-color">
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="login"></ion-back-button>
+      </ion-buttons>
+      <ion-title>Register</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Email</ion-label>
+      <ion-input type="text" formControlName="registerEmail" required></ion-input>
+    </ion-item>
+
+    <ion-item lines="full">
+      <ion-label position="floating">Password</ion-label>
+      <ion-input type="password" formControlName="registerPassword" required></ion-input>
+    </ion-item>
+
+    <ion-row>
+      <ion-col>
+        <ion-button [disabled]="!registerForm.valid" type="submit" color="warning" expand="block">Sign Up</ion-button>
+      </ion-col>
+    </ion-row>
+
+</form>

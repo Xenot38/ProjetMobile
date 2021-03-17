@@ -1,8 +1,16 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home"></ion-back-button>
+    </ion-buttons>
     <ion-title>
       {{this.list.name}}
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="openShareModal()">
+        <ion-icon name="share-social-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -30,5 +38,5 @@
 </ion-content>
 
 <ion-footer>
-  <ion-button expand="block" (click)="presentModal()">Add a new item</ion-button>
+  <ion-button color="warning" expand="block" (click)="presentModal()">Add a new item</ion-button>
 </ion-footer>

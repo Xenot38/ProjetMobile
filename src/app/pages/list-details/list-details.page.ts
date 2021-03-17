@@ -5,6 +5,10 @@ import {List} from '../../models/list';
 import {Todo} from '../../models/todo';
 import {ModalController} from '@ionic/angular';
 import {CreateTodoComponent} from '../../modals/create-todo/create-todo.component';
+import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
+import {Observable} from 'rxjs';
+import {CreateListComponent} from '../../modals/create-list/create-list.component';
+import {UserManagementComponent} from '../../modals/user-management/user-management.component';
 
 @Component({
   selector: 'app-list-details',
@@ -12,21 +16,43 @@ import {CreateTodoComponent} from '../../modals/create-todo/create-todo.componen
   styleUrls: ['./list-details.page.scss'],
 })
 export class ListDetailsPage implements OnInit {
-  listId: number;
+  listId: string;
   list: List;
-  constructor(public route: ActivatedRoute, public listServicce: ListService, public modalController: ModalController) { }
+  todosCollection: AngularFirestoreCollection<Todo>;
+  todosObservable: Observable<Todo[]>;
+  constructor(public route: ActivatedRoute,
+              public listService: ListService,
+              public modalController: ModalController,
+              public afs: AngularFirestore) {
+
+  }
 
   ngOnInit() {
-    this.listId = Number(this.route.snapshot.paramMap.get('id'));
-    this.list = this.listServicce.getOne(this.listId);
+    this.listId = String(this.route.snapshot.paramMap.get('id'));
+    this.list = this.listService.getOne(this.listId);
+    this.todosCollection = this.afs.collection<List>('lists').doc(this.listId).collection<Todo>('todos');
+    this.todosObservable = this.todosCollection.valueChanges();
+    this.todosObservable.subscribe(todos => {
+      this.list.todos = todos;
+    });
   }
 
   deleteTodo(todo: Todo){
-    this.list.todos.splice(this.list.todos.indexOf(todo), 1);
+    this.listService.deleteTodo(this.listId, todo.id);
+    // this.list.todos.splice(this.list.todos.indexOf(todo), 1);
   }
   async presentModal() {
     const modal = await this.modalController.create({
       component: CreateTodoComponent,
+      cssClass: 'my-custom-class',
+      componentProps: {list: this.list}
+    });
+    return await modal.present();
+  }
+
+  async openShareModal() {
+    const modal = await this.modalController.create({
+      component: UserManagementComponent,
       cssClass: 'my-custom-class',
       componentProps: {list: this.list}
     });

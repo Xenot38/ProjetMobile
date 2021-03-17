@@ -1,15 +1,18 @@
 import {Todo} from './todo';
 
 export class List {
-    static lastId = 0;
-    id: number;
+    id: string;
     name: string;
-    todos: Todo[];
+    todos?: Todo[];
+    owner: string;
+    canRead?: string[];
+    canWrite?: string[];
 
-
-    constructor(name: string){
-        this.id = List.lastId++;
+    constructor(id: string, name: string, owner: string){
+        this.id = id;
         this.name = name;
-        this.todos = [];
-    };
+        this.owner = owner;
+        this.canRead = [];
+        this.canWrite = [];
+    }
 }

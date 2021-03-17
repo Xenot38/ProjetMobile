@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import {ListService} from '../services/list.service';
 import {List} from '../models/list';
-import { ModalController } from '@ionic/angular';
+import {LoadingController, MenuController, ModalController} from '@ionic/angular';
 import {CreateListComponent} from '../modals/create-list/create-list.component';
+import {FormBuilder} from '@angular/forms';
+import {AngularFireAuth} from '@angular/fire/auth';
+import {Router} from '@angular/router';
+import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
+import {Observable, Subscription} from 'rxjs';
 
 
 @Component({
@@ -12,19 +17,52 @@ import {CreateListComponent} from '../modals/create-list/create-list.component';
 })
 export class HomePage implements OnInit{
   todoLists: List[];
+  userEmail: string;
+  userLogin: Subscription;
 
-  constructor(protected listService: ListService, public modalController: ModalController) {}
+  // TODO todo-details, pouvoir cocher les todo, finir le partage et les permissions/ ajouter du design
+
+  constructor(protected listService: ListService,
+              public modalController: ModalController,
+              protected auth: AngularFireAuth,
+              protected router: Router,
+              protected menu: MenuController,
+              public afs: AngularFirestore
+              ) {
+    this.userLogin = this.auth.user.subscribe( user => {
+      if (user !== null){
+        this.userEmail = user.email;
+      }
+      this.listService.getAll().subscribe((lists) => {
+        this.todoLists = lists;
+        this.todoLists.forEach(listLoop => {
+          if (listLoop.todos === undefined){
+            listLoop.todos = [];
+          }
+          if (listLoop.canRead === undefined){
+            listLoop.canRead = [];
+          }
+          if (listLoop.canWrite === undefined){
+            listLoop.canRead = [];
+          }
+        });
+        this.todoLists = this.todoLists.filter((list) => {
+          // tslint:disable-next-line:max-line-length
+          return list.owner === this.userEmail || list.canRead.indexOf(this.userEmail) !== -1 || list.canWrite.indexOf(this.userEmail) !== -1;
+        });
+      });
+    });
+  }
+
 
   ngOnInit(){
-    this.todoLists = this.listService.getAll();
   }
+
+  // Presents the list creation Modal
   async presentModal() {
     const modal = await this.modalController.create({
       component: CreateListComponent,
       cssClass: 'my-custom-class'
-    });
-    modal.onDidDismiss().then(data => {
-      this.todoLists = this.listService.getAll();
     });
     return await modal.present();
   }
@@ -32,4 +70,12 @@ export class HomePage implements OnInit{
   deleteList(list: List){
     this.listService.deleteList(list);
   }
+
+  logout(){
+    const logoutPromise = this.auth.signOut();
+    this.userLogin.unsubscribe();
+    this.router.navigate(['/login']);
+  }
+
+
 }

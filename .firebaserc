@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "projetmobile-cba6c": {
+      "hosting": {
+        "app": [
+          "projetmobile-cba6c"
+        ]
+      }
+    }
+  }
+}

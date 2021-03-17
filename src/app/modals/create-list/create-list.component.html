@@ -1,8 +1,20 @@
-<form [formGroup]="listForm" (ngSubmit)="onFormSubmit()">
-  <ion-item>
-    <ion-label position="floating">Name</ion-label>
-    <ion-input type="text" formControlName="listName"></ion-input>
-  </ion-item>
+<ion-header [translucent]="true">
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-button (click)="this.modalController.dismiss();"><ion-icon name="arrow-back-outline"></ion-icon></ion-button>
+    </ion-buttons>
+    <ion-title>
+      Create a new list
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <form [formGroup]="listForm" (ngSubmit)="onFormSubmit()">
+    <ion-item>
+      <ion-label position="floating">Name</ion-label>
+      <ion-input type="text" formControlName="listName"></ion-input>
+    </ion-item>
 
-  <ion-button [disabled]="!listForm.valid" type="submit" expand="block">Submit</ion-button>
-</form>
+    <ion-button color="warning" [disabled]="!listForm.valid" type="submit" expand="block">Submit</ion-button>
+  </form>
+</ion-content>

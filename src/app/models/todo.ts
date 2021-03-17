@@ -1,14 +1,13 @@
 export class Todo {
-    static lastId = 0;
-    id: number;
+    id: string;
     name: string;
     description: string;
     isDone: boolean;
 
-    constructor(name: string, desc: string){
-        this.id = Todo.lastId++;
+    constructor(id: string, name: string, desc: string, isDone: boolean){
+        this.id = id;
         this.name = name;
         this.description = desc;
-        this.isDone = false;
+        this.isDone = isDone;
     }
 }

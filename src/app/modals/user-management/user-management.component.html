@@ -1,0 +1,37 @@
+<ion-header [translucent]="true">
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-button (click)="this.modalController.dismiss();"><ion-icon name="arrow-back-outline"></ion-icon></ion-button>    </ion-buttons>
+    <ion-title>
+      Share this list
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true">
+  <form [formGroup]="userForm" (ngSubmit)="onFormSubmit()">
+    <ion-item>
+      <ion-label position="floating"><ion-icon name="mail-outline"></ion-icon> User email</ion-label>
+      <ion-input type="text" formControlName="userMail"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label ><ion-icon slot="start" name="create-outline"></ion-icon> Allow editing</ion-label><ion-checkbox color="warning" formControlName="userWrite"></ion-checkbox>
+    </ion-item>
+
+    <ion-button color="warning" [disabled]="!userForm.valid" type="submit" expand="block">Add user</ion-button>
+  </form>
+
+  <ion-list>
+    <ion-list-header><h3>Current users</h3></ion-list-header>
+    <ion-item *ngFor="let writer of this.list.canWrite">
+      <ion-icon slot="start" name="person-circle-outline"></ion-icon>
+      <ion-label><h3>{{writer}}</h3></ion-label>
+      <ion-checkbox checked="true" color="warning" slot="end"></ion-checkbox>
+    </ion-item>
+    <ion-item *ngFor="let reader of this.list.canRead">
+      <ion-icon slot="start" name="person-circle-outline"></ion-icon>
+      <ion-label><h3>{{reader}}</h3></ion-label>
+      <ion-checkbox checked="false" color="warning" slot="end"></ion-checkbox>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

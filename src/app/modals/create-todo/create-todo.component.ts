@@ -27,8 +27,7 @@ export class CreateTodoComponent implements OnInit {
   onFormSubmit(){
     const todoName = this.todoForm.get('todoName').value;
     const todoDesc = this.todoForm.get('todoDesc').value;
-    const todo = new Todo(todoName, todoDesc);
-    this.listService.addTodo(this.list.id, todo);
+    this.listService.addTodo(this.list.id, todoName, todoDesc);
     this.modalController.dismiss();
   }
 }
