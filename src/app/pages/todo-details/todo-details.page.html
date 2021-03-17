@@ -1,9 +1,27 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>todo-details</ion-title>
+<ion-header [translucent]="true">
+  <ion-toolbar class="background-color">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="home/list-details/{{listId}}"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      Task View
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content [fullscreen]="true">
+
+  <ion-item class="ion-text-wrap">
+
+    <ion-text color="primary"><ion-label position="floating">Task Name</ion-label></ion-text>
+    <ion-input [(ngModel)]="todoName" (change)="updateName()"></ion-input>
+  </ion-item>
+
+  <ion-item class="ion-text-wrap">
+    <ion-text color="primary"><ion-label position="floating">Task Description</ion-label></ion-text>
+    <ion-textarea wrap="off" [(ngModel)]="todoDesc" (change)="updateDescription()"></ion-textarea>
+  </ion-item>
+
 
 </ion-content>
+

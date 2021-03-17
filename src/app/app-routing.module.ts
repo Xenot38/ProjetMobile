@@ -17,13 +17,13 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'home/list-details/:id',
+    path: 'home/list-details/:listId',
     loadChildren: () => import('./pages/list-details/list-details.module').then( m => m.ListDetailsPageModule),
     canActivate: [AngularFireAuthGuard],
     data: {authGuardPipe : redirectToLogin}
     },
   {
-    path: 'todo-details/:id',
+    path: 'home/list-details/:listId/todo-details/:todoId',
     loadChildren: () => import('./pages/todo-details/todo-details.module').then(m => m.TodoDetailsPageModule),
     canActivate: [AngularFireAuthGuard],
     data: {authGuardPipe : redirectToLogin}

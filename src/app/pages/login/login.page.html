@@ -10,28 +10,29 @@
 
     <ion-item lines="full">
       <ion-label position="floating">Email</ion-label>
-      <ion-input type="text" formControlName="loginEmail" required></ion-input>
+      <ion-input placeholder="Your e-mail adress" type="email" formControlName="loginEmail" required></ion-input>
     </ion-item>
 
     <ion-item lines="full">
       <ion-label position="floating">Password</ion-label>
-      <ion-input type="password" formControlName="loginPassword" required></ion-input>
+      <ion-input placeholder="Your password" type="password" formControlName="loginPassword" required></ion-input>
     </ion-item>
 
     <ion-row>
       <ion-col>
-        <ion-button [disabled]="!loginForm.valid" type="submit" color="warning" expand="block">Sign In</ion-button>
+        <ion-button [disabled]="!loginForm.valid" type="submit" color="success" expand="block">Sign In</ion-button>
       </ion-col>
     </ion-row>
-  <ion-item lines="none">
-    <ion-text color="dark"><h4>No account yet ? Create one <a [routerLink]="['/register']" class="io ion-text-center">here</a></h4></ion-text>
-  </ion-item>
-
+    <ion-row>
+      <ion-col>
+        <ion-button [routerLink]="['/register']" color="warning" expand="block">Sign Up</ion-button>
+      </ion-col>
+    </ion-row>
 </form>
 
-
 <ion-item class="ion-align-self-center">
-  <a [routerLink]="['/forgot-password']" class="small-text ion-text-center">
-    <ion-text  color="secondary"><h4>Forgot Password?</h4></ion-text>
+  <a (click)="presentModal()" class="small-text ion-text-center">
+    <ion-text  color="secondary"><h4>Forgot password</h4></ion-text>
   </a>
 </ion-item>
+

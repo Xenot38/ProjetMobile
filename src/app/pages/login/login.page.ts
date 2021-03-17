@@ -3,7 +3,9 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {Todo} from '../../models/todo';
 import {Router} from '@angular/router';
-import {LoadingController, ToastController} from '@ionic/angular';
+import {LoadingController, ModalController, ToastController} from '@ionic/angular';
+import {CreateListComponent} from '../../modals/create-list/create-list.component';
+import {ForgotPasswordComponent} from '../../modals/forgot-password/forgot-password.component';
 
 
 @Component({
@@ -19,10 +21,11 @@ export class LoginPage implements OnInit {
               protected auth: AngularFireAuth,
               protected router: Router,
               public loadingController: LoadingController,
-              public toastController: ToastController)
+              public toastController: ToastController,
+              public modalController: ModalController)
   {
     this.loginForm = this.fb.group({
-      loginEmail: ['', Validators.required],
+      loginEmail: ['', Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')],
       loginPassword: ['', Validators.required]
     });
   }
@@ -74,4 +77,11 @@ export class LoginPage implements OnInit {
     const { role, data } = await loading.onDidDismiss();
   }
 
+  async presentModal() {
+    const modal = await this.modalController.create({
+      component: ForgotPasswordComponent,
+      cssClass: 'my-custom-class'
+    });
+    return await modal.present();
+  }
 }

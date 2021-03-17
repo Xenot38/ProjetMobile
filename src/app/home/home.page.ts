@@ -20,7 +20,7 @@ export class HomePage implements OnInit{
   userEmail: string;
   userLogin: Subscription;
 
-  // TODO todo-details, pouvoir cocher les todo, finir le partage et les permissions/ ajouter du design
+  // TODO finir le partage et les permissions/ auth google, email validation
 
   constructor(protected listService: ListService,
               public modalController: ModalController,
@@ -75,6 +75,7 @@ export class HomePage implements OnInit{
     const logoutPromise = this.auth.signOut();
     this.userLogin.unsubscribe();
     this.router.navigate(['/login']);
+    this.menu.close();
   }
 
 

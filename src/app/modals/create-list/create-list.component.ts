@@ -10,7 +10,9 @@ import {ModalController} from '@ionic/angular';
 export class CreateListComponent implements OnInit {
     listForm: FormGroup;
 
-  constructor(protected listService: ListService, protected fb: FormBuilder, private modalController: ModalController) {
+  constructor(protected listService: ListService,
+              protected fb: FormBuilder,
+              private modalController: ModalController) {
     this.listForm = this.fb.group({
       listName: ['', Validators.required]
     });

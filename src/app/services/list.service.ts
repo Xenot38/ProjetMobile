@@ -10,7 +10,7 @@ import {AngularFireAuth} from '@angular/fire/auth';
   providedIn: 'root'
 })
 export class ListService {
-  userEmail: string;
+  userEmailService: string;
   lists: List[];
   listsCollection: AngularFirestoreCollection<List>;
   listsObservable: Observable<List[]>;
@@ -20,7 +20,7 @@ export class ListService {
     this.listsObservable = this.listsCollection.valueChanges();
     this.auth.user.subscribe( user => {
       if (user !== null){
-        this.userEmail = user.email;
+        this.userEmailService = user.email;
       }
       this.listsObservable.subscribe((lists) => {
         lists.forEach(listLoop => {
@@ -36,7 +36,7 @@ export class ListService {
         });
         this.lists = lists.filter((list) => {
           // tslint:disable-next-line:max-line-length
-          return list.owner === this.userEmail || list.canRead.indexOf(this.userEmail) !== -1 || list.canWrite.indexOf(this.userEmail) !== -1;
+          return list.owner === this.userEmailService || list.canRead.indexOf(this.userEmailService) !== -1 || list.canWrite.indexOf(this.userEmailService) !== -1;
         });
       });
     });
@@ -53,7 +53,7 @@ export class ListService {
   public createList(name: string){
     // Persist a document id
     const id = this.afs.createId();
-    const owner = this.userEmail;
+    const owner = this.userEmailService;
     const canRead = [];
     const canWrite = [];
     const list: List = { id, name , owner, canRead, canWrite};
@@ -70,8 +70,12 @@ export class ListService {
     this.listsCollection.doc(listId).collection<Todo>('todos').doc(id).set(todo);
   }
 
-  public deleteTodo(idList: string, idTodo: string){
-    this.afs.collection<List>('lists').doc(idList).collection<Todo>('todos').doc(idTodo).delete();
+  public deleteTodo(listId: string, todoId: string){
+    this.afs.collection<List>('lists').doc(listId).collection<Todo>('todos').doc(todoId).delete();
   }
 
+  getOneTodo(listId: string, todoId: string) {
+    const listTodo = this.lists.find(list => list.id === listId);
+    return listTodo.todos.find(todo => todo.id === todoId);
+  }
 }

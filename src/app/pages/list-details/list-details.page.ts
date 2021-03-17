@@ -28,7 +28,7 @@ export class ListDetailsPage implements OnInit {
   }
 
   ngOnInit() {
-    this.listId = String(this.route.snapshot.paramMap.get('id'));
+    this.listId = String(this.route.snapshot.paramMap.get('listId'));
     this.list = this.listService.getOne(this.listId);
     this.todosCollection = this.afs.collection<List>('lists').doc(this.listId).collection<Todo>('todos');
     this.todosObservable = this.todosCollection.valueChanges();
@@ -57,5 +57,9 @@ export class ListDetailsPage implements OnInit {
       componentProps: {list: this.list}
     });
     return await modal.present();
+  }
+
+  isDone(t: Todo) {
+    this.afs.collection<List>('lists').doc(this.listId).collection<Todo>('todos').doc(t.id).update({isDone : !t.isDone});
   }
 }
