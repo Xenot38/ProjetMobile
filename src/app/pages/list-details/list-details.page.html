@@ -24,7 +24,7 @@
         <ion-checkbox [disabled]="!(list.owner === currentUserEmail || list.canWrite.indexOf(currentUserEmail) != -1)" checked="{{t?.isDone}}" color="warning" slot="start" (click)="$event.stopPropagation();isDone(t)"></ion-checkbox>
       </ion-item>
       <ion-item-options side="end">
-        <ion-item-option color="danger" (click)="deleteTodo(t)" >
+        <ion-item-option [hidden]="!(list.owner === currentUserEmail || list.canWrite.indexOf(currentUserEmail) != -1)" color="danger" color="danger" (click)="deleteTodo(t)" >
           <ion-icon name="trash-outline"></ion-icon>
         </ion-item-option>
       </ion-item-options>

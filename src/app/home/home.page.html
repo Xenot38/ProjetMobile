@@ -35,7 +35,7 @@
       </ion-item>
 
       <ion-item-options side="end">
-        <ion-item-option color="danger" (click)="deleteList(l)" >
+        <ion-item-option [hidden]="!(l.owner === userEmail || l.canWrite.indexOf(userEmail) != -1)" color="danger" (click)="deleteList(l)" >
           <ion-icon name="trash-outline"></ion-icon>
         </ion-item-option>
       </ion-item-options>
