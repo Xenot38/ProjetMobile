@@ -20,8 +20,6 @@ export class HomePage implements OnInit{
   userEmail: string;
   userLogin: Subscription;
 
-  // TODO finir le partage et les permissions/ auth google, email validation
-
   constructor(protected listService: ListService,
               public modalController: ModalController,
               protected auth: AngularFireAuth,

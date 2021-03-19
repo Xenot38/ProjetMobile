@@ -14,12 +14,12 @@
   <ion-item class="ion-text-wrap">
 
     <ion-text color="primary"><ion-label position="floating">Task Name</ion-label></ion-text>
-    <ion-input [(ngModel)]="todoName" (change)="updateName()"></ion-input>
+    <ion-input [readonly]="!(listTodo.owner === currentUserEmail || listTodo.canWrite.indexOf(currentUserEmail) != -1)" [(ngModel)]="todoName" (change)="updateName()"></ion-input>
   </ion-item>
 
   <ion-item class="ion-text-wrap">
     <ion-text color="primary"><ion-label position="floating">Task Description</ion-label></ion-text>
-    <ion-textarea wrap="off" [(ngModel)]="todoDesc" (change)="updateDescription()"></ion-textarea>
+    <ion-textarea wrap="off" [readonly]="!(listTodo.owner === currentUserEmail || listTodo.canWrite.indexOf(currentUserEmail) != -1)" [(ngModel)]="todoDesc" (change)="updateDescription()"></ion-textarea>
   </ion-item>
 
 

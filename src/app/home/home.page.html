@@ -31,7 +31,7 @@
     <ion-item-sliding *ngFor="let l of todoLists">
       <ion-item button routerLink="list-details/{{ l?.id }}" routerLinkActive="active">
         <ion-label>{{ l?.name }}</ion-label>
-        <ion-icon slot="end" name="eye-outline"></ion-icon>
+        <ion-icon color="primary" slot="end" name="eye-outline"></ion-icon>
       </ion-item>
 
       <ion-item-options side="end">

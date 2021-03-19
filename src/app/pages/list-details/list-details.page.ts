@@ -16,6 +16,7 @@ import {UserManagementComponent} from '../../modals/user-management/user-managem
   styleUrls: ['./list-details.page.scss'],
 })
 export class ListDetailsPage implements OnInit {
+  currentUserEmail: string;
   listId: string;
   list: List;
   todosCollection: AngularFirestoreCollection<Todo>;
@@ -35,6 +36,7 @@ export class ListDetailsPage implements OnInit {
     this.todosObservable.subscribe(todos => {
       this.list.todos = todos;
     });
+    this.currentUserEmail = this.listService.getUserEmail();
   }
 
   deleteTodo(todo: Todo){

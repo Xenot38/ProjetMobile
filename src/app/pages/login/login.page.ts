@@ -25,7 +25,7 @@ export class LoginPage implements OnInit {
               public modalController: ModalController)
   {
     this.loginForm = this.fb.group({
-      loginEmail: ['', Validators.required, Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$')],
+      loginEmail: ['', [Validators.required, Validators.email]],
       loginPassword: ['', Validators.required]
     });
   }
@@ -34,37 +34,40 @@ export class LoginPage implements OnInit {
   }
 
   onFormSubmit() {
-    const loginEmail = this.loginForm.get('loginEmail').value;
-    const loginPassword = this.loginForm.get('loginPassword').value;
-    const credentialPromise = this.auth.signInWithEmailAndPassword(loginEmail, loginPassword);
-    this.presentLoading();
-    credentialPromise.then(data => {
-      this.loadingController.dismiss();
-      this.router.navigate(['/home']);
-    }).catch(async error => {
-      const toast = await this.toastController.create({
-        message: error.message,
-        duration: 4000,
-        color: 'warning'
+    if (this.loginForm.valid){
+      const loginEmail = this.loginForm.get('loginEmail').value;
+      const loginPassword = this.loginForm.get('loginPassword').value;
+      const credentialPromise = this.auth.signInWithEmailAndPassword(loginEmail, loginPassword);
+      this.presentLoading();
+      credentialPromise.then(data => {
+        this.router.navigate(['/home']);
+        location.reload();
+        this.loadingController.dismiss();
+      }).catch(async error => {
+        const toast = await this.toastController.create({
+          message: error.message,
+          duration: 4000,
+          color: 'warning'
+        });
+        switch (error.code) {
+          case 'auth/invalid-email': {
+            toast.message = 'This email format is invalid',
+                toast.present();
+            break;
+          }
+          case 'auth/user-not-found': {
+            toast.message = 'This user does not exist',
+                toast.present();
+            break;
+          }
+          default: {
+            toast.present();
+            break;
+          }
+        }
+        this.loadingController.dismiss();
       });
-      switch (error.code) {
-        case 'auth/invalid-email': {
-          toast.message = 'This email format is invalid',
-          toast.present();
-          break;
-        }
-        case 'auth/user-not-found': {
-          toast.message = 'This user does not exist',
-          toast.present();
-          break;
-        }
-        default: {
-          toast.present();
-          break;
-        }
-      }
-      this.loadingController.dismiss();
-    });
+    }
   }
 
   async presentLoading() {

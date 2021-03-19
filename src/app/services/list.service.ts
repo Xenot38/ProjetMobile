@@ -42,6 +42,10 @@ export class ListService {
     });
   }
 
+  public getUserEmail(){
+    return this.userEmailService;
+  }
+
   public getAll(){
     return this.listsObservable;
   }

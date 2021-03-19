@@ -13,10 +13,27 @@
       <ion-input placeholder="Your e-mail adress" type="email" formControlName="loginEmail" required></ion-input>
     </ion-item>
 
+
+    <ion-text color="danger">
+      <ion-label *ngIf="loginForm.invalid && loginForm.get('loginEmail').touched && loginForm.get('loginEmail').errors">
+          <small *ngIf="loginForm.get('loginEmail').errors.required">Field is required</small>
+          <small *ngIf="loginForm.get('loginEmail').errors.email">Not a valid email</small>
+      </ion-label>
+    </ion-text>
+
+
     <ion-item lines="full">
       <ion-label position="floating">Password</ion-label>
       <ion-input placeholder="Your password" type="password" formControlName="loginPassword" required></ion-input>
     </ion-item>
+
+
+    <ion-text color="danger">
+      <ion-label *ngIf="loginForm.invalid && loginForm.get('loginPassword').touched && loginForm.get('loginPassword').errors">
+      <small *ngIf="loginForm.get('loginPassword').errors.required">Field is required</small>
+      </ion-label>
+    </ion-text>
+
 
     <ion-row>
       <ion-col>

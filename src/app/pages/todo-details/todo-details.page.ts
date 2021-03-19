@@ -11,7 +11,9 @@ import {AngularFirestore} from '@angular/fire/firestore';
   styleUrls: ['./todo-details.page.scss'],
 })
 export class TodoDetailsPage implements OnInit {
+  currentUserEmail: string;
   listId: string;
+  listTodo: List;
   todoId: string;
   todo: Todo;
   todoName: string;
@@ -24,9 +26,11 @@ export class TodoDetailsPage implements OnInit {
   ngOnInit() {
     this.listId = String(this.route.snapshot.paramMap.get('listId'));
     this.todoId = String(this.route.snapshot.paramMap.get('todoId'));
+    this.listTodo = this.listService.getOne(this.listId);
     this.todo = this.listService.getOneTodo(this.listId, this.todoId);
     this.todoName = this.todo.name;
     this.todoDesc = this.todo.description;
+    this.currentUserEmail = this.listService.getUserEmail();
   }
 
   updateName() {

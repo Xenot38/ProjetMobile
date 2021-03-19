@@ -4,11 +4,11 @@
       <ion-back-button defaultHref="home"></ion-back-button>
     </ion-buttons>
     <ion-title>
-      {{this.list.name}}
+      {{list.name}}
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="openShareModal()">
-        <ion-icon name="share-social-outline"></ion-icon>
+      <ion-button [hidden]="list.owner != currentUserEmail" (click)="openShareModal()">
+        <ion-icon color="primary" name="share-social-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -17,11 +17,11 @@
 <ion-content [fullscreen]="true">
 
   <ion-list>
-    <ion-item-sliding *ngFor="let t of this.list.todos">
+    <ion-item-sliding *ngFor="let t of list.todos">
       <ion-item button routerLink="todo-details/{{ t?.id }}" routerLinkActive="active">
-        <ion-icon slot="end" name="create-outline"></ion-icon>
+        <ion-icon color="primary" slot="end" name="create-outline"></ion-icon>
         <ion-label> {{ t?.name }} </ion-label>
-        <ion-checkbox checked="{{t?.isDone}}" color="warning" slot="start" (click)="isDone(t)"></ion-checkbox>
+        <ion-checkbox [disabled]="!(list.owner === currentUserEmail || list.canWrite.indexOf(currentUserEmail) != -1)" checked="{{t?.isDone}}" color="warning" slot="start" (click)="$event.stopPropagation();isDone(t)"></ion-checkbox>
       </ion-item>
       <ion-item-options side="end">
         <ion-item-option color="danger" (click)="deleteTodo(t)" >
@@ -34,5 +34,5 @@
 </ion-content>
 
 <ion-footer>
-  <ion-button color="warning" expand="block" (click)="presentModal()">Add a new item</ion-button>
+  <ion-button [hidden]="!(list.owner === currentUserEmail || list.canWrite.indexOf(currentUserEmail) != -1)" color="warning" expand="block" (click)="presentModal()">Add a new item</ion-button>
 </ion-footer>
