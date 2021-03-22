@@ -56,7 +56,7 @@ export class ListDetailsPage implements OnInit {
     const modal = await this.modalController.create({
       component: UserManagementComponent,
       cssClass: 'my-custom-class',
-      componentProps: {list: this.list}
+      componentProps: {list: this.list, currentUserEmail: this.currentUserEmail}
     });
     return await modal.present();
   }

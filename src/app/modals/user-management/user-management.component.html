@@ -23,16 +23,31 @@
 
   <ion-list>
     <ion-list-header><h3>Current users</h3></ion-list-header>
-    <ion-item *ngFor="let writer of this.list.canWrite">
-      <ion-icon slot="start" name="person-circle-outline"></ion-icon>
-      <ion-label><h3>{{writer}}</h3></ion-label>
-      <ion-checkbox checked="true" color="warning" slot="end"></ion-checkbox>
-    </ion-item>
-    <ion-item *ngFor="let reader of this.list.canRead">
-      <ion-icon slot="start" name="person-circle-outline"></ion-icon>
-      <ion-label><h3>{{reader}}</h3></ion-label>
-      <ion-checkbox checked="false" color="warning" slot="end"></ion-checkbox>
-    </ion-item>
+    <ion-item-sliding *ngFor="let writer of this.list.canWrite">
+      <ion-item>
+        <ion-icon slot="start" name="person-circle-outline"></ion-icon>
+        <ion-label><h3>{{writer}}</h3></ion-label>
+        <ion-checkbox (click)="changeRightsWriter(writer)" checked="true" color="warning" slot="end"></ion-checkbox>
+      </ion-item>
+      <ion-item-options>
+        <ion-item-option  color="danger" color="danger" (click)="deleteWriter(writer)" >
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+
+    <ion-item-sliding *ngFor="let reader of this.list.canRead">
+      <ion-item>
+        <ion-icon slot="start" name="person-circle-outline"></ion-icon>
+        <ion-label><h3>{{reader}}</h3></ion-label>
+        <ion-checkbox (click)="changeRightsReader(reader)" checked="false" color="warning" slot="end"></ion-checkbox>
+      </ion-item>
+      <ion-item-options>
+        <ion-item-option color="danger" color="danger" (click)="deleteReader(reader)" >
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
   </ion-list>
 
 </ion-content>

@@ -4,6 +4,7 @@ import {ListService} from '../../services/list.service';
 import {IonCheckbox, ModalController} from '@ionic/angular';
 import {List} from '../../models/list';
 import {AngularFirestore} from '@angular/fire/firestore';
+import {Todo} from '../../models/todo';
 
 @Component({
   selector: 'app-user-management',
@@ -12,6 +13,8 @@ import {AngularFirestore} from '@angular/fire/firestore';
 })
 export class UserManagementComponent implements OnInit {
   @Input() list: List;
+  @Input() currentUserEmail: string;
+
   userForm: FormGroup;
   constructor(protected listService: ListService,
               protected fb: FormBuilder,
@@ -38,6 +41,31 @@ export class UserManagementComponent implements OnInit {
       this.list.canRead.push(emailForm);
       this.afs.collection<List>('lists').doc(this.list.id).update({canRead: this.list.canRead});
     }
-    this.modalController.dismiss();
+    this.userForm.get('userMail').setValue('');
+    this.userForm.get('userMail').setValue(false);
+  }
+
+  deleteReader(reader: string) {
+    this.list.canRead = this.list.canRead.filter(read => read !== reader);
+    this.afs.collection<List>('lists').doc(this.list.id).update({canRead: this.list.canRead});
+  }
+
+  deleteWriter(writer: string) {
+    this.list.canWrite = this.list.canWrite.filter(write => write !== writer);
+    this.afs.collection<List>('lists').doc(this.list.id).update({canWrite: this.list.canWrite});
+  }
+
+  changeRightsReader(reader: string) {
+    this.list.canRead = this.list.canRead.filter(read => read !== reader);
+    this.list.canWrite.push(reader);
+    this.afs.collection<List>('lists').doc(this.list.id).update({canRead: this.list.canRead});
+    this.afs.collection<List>('lists').doc(this.list.id).update({canWrite: this.list.canWrite});
+  }
+
+  changeRightsWriter(writer: string) {
+    this.list.canWrite = this.list.canWrite.filter(write => write !== writer);
+    this.list.canRead.push(writer);
+    this.afs.collection<List>('lists').doc(this.list.id).update({canRead: this.list.canRead});
+    this.afs.collection<List>('lists').doc(this.list.id).update({canWrite: this.list.canWrite});
   }
 }
