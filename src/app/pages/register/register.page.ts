@@ -35,8 +35,9 @@ export class RegisterPage implements OnInit {
       const registerPassword = this.registerForm.get('registerPassword').value;
       this.presentLoading();
       this.auth.createUserWithEmailAndPassword(registerEmail, registerPassword).then(data => {
-        this.loadingController.dismiss();
         this.router.navigate(['/home']);
+        location.reload();
+        this.loadingController.dismiss();
       }).catch(async error => {
         const toast = await this.toastController.create({
           message: error.message,
